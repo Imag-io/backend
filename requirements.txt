@@ -1,0 +1,7 @@
+# MAY CHANGEEE
+# Flask>=2.3
+# flask-cors>=4.0
+# numpy
+# opencv-python-headless
+# Pillow
+# GDAL
