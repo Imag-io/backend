@@ -29,10 +29,22 @@ def build_history(root_id: str | None = None) -> List[Dict[str, Any]]:
     if root_id not in image_metadata:
         raise KeyError("Image not found")
 
-    lineage = [_slim(image_metadata[root_id], root_id) | {"operation": "original"}]
-    for i, m in image_metadata.items():
-        if m.get("parent_id") == root_id:
-            lineage.append(_slim(m, i))
+    def _collect_descendants(root):
+        todo, out = [root], []
+        while todo:
+            parent = todo.pop()
+            for i, m in image_metadata.items():
+                if m.get("parent_id") == parent:
+                    out.append((i, m))
+                    todo.append(i)
+        return out
+
+    lineage = [_slim(image_metadata[root_id], root_id)
+               | {"operation": "original"}]
+
+    for i, m in _collect_descendants(root_id):
+        lineage.append(_slim(m, i))
+
     return sorted(lineage, key=lambda x: x["timestamp"])
 
 

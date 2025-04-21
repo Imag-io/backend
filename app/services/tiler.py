@@ -39,10 +39,15 @@ def process_image(image_id: str, file_path: str) -> None:
 
 # Helper (inside GDAL and openCV try/catch)
 def _store_meta(img_id, path, w, h):
-    files.image_metadata[img_id] = {
-        "width": w, "height": h, "file_path": path,
-        "tiling_complete": False, "timestamp": time.time()
-    }
+    meta = files.image_metadata.get(img_id, {})     # <-- keep anything written earlier
+    meta.update({
+        "width": w,
+        "height": h,
+        "file_path": path,
+        "tiling_complete": False,
+        "timestamp": time.time(),
+    })
+    files.image_metadata[img_id] = meta
 
 
 def _native_zoom(w, h) -> int:
