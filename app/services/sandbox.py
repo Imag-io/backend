@@ -9,7 +9,8 @@ from . import files
 
 
 def run(parent_id: str, src_path: str, user_code: str) -> Tuple[str, str]:
-    result_id   = f"{parent_id}_python_{uuid.uuid4()}"
+    root_id = parent_id.split("_")[0]
+    result_id   = f"{root_id}_python_{uuid.uuid4()}"
     result_dir  = os.path.join(BaseConfig.UPLOAD_FOLDER, result_id)
     os.makedirs(result_dir, exist_ok=True)
     result_file = os.path.join(result_dir, "result.png")

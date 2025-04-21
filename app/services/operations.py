@@ -9,7 +9,9 @@ from . import files
 def run(parent_id: str, src_path: str,
         operation: str, params: dict) -> Tuple[str, str]:
     #Do {operation} and return (result_id, result_file_path).
-    result_id   = f"{parent_id}_{operation}_{uuid.uuid4()}"
+
+    root_id = parent_id.split("_")[0]
+    result_id   = f"{root_id}_{operation}_{uuid.uuid4()}"
     result_dir  = os.path.join(BaseConfig.UPLOAD_FOLDER, result_id)
     os.makedirs(result_dir, exist_ok=True)
     result_file = os.path.join(result_dir, "result.png")
